@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="App">
+
+        <div class="row">
+            <h1>House Price prediction</h1>
+            <div class="column">
+                <form>
+
+                    <div class=" inp">
+                        <label for="location">Region</label>
+                        <select id="location">
+
+                        </select>
+                    </div>
+                    <div class="inp">
+                        <label for="area">Area:</label>
+                        <input type="number" id="area" name="area">
+                    </div>
+                    <div class=" inp">
+                        <label for="bhk">bhk:</label>
+                        <select id="bhk" name="bhk">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class=" inp">
+                        <label for="gymnasium">Gymnasium:</label>
+                        <select id="gymnasium" name="gymnasium">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class=" inp">
+                        <label for="lift_available">Lift_Available:</label>
+                        <select id="lift_available" name="lift_available">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class=" inp">
+                        <label for="car_parking">car_parking :</label>
+                        <select id="car_parking" name="car_parking">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class=" inp">
+                        <label for="maintenance_staff">maintenance_staff :</label>
+                        <select id="maintenance_staff" name="maintenance_staff">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class=" inp">
+                        <label for="security">Security:</label>
+                        <select id="security" name="security">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class=" inp">
+                        <label for="childrens_play_area">Children's Play Area:</label>
+                        <select id="childrens_play_area" name="childrens_play_area">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class=" inp">
+                        <label for="clubhouse">clubhouse:</label>
+                        <select id="clubhouse" name="clubhouse">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                    <div class=" inp">
+                        <label for="intercom">intercom:</label>
+                        <select id="intercom" name="intercom">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                    <button class="sub" onclick="onClickedEstimatePrice()" type="button">Estimate Price</button>
+                    <div id="uiEstimatedPrice" class="result">
+                        <h2></h2>
+                    </div>
+                </form>
+                <script>
+
+
+                    const array = ['Airoli', 'Ambernath East', 'Ambernath West', 'Andheri',
+                        'Andheri East', 'Andheri West', 'Badlapur', 'Badlapur East',
+                        'Badlapur West', 'Bandra East', 'Bandra West', 'Belapur',
+                        'Bhandup West', 'Bhayandar East', 'Bhiwandi', 'Boisar',
+                        'Borivali East', 'Borivali West', 'Chembur', 'Chembur East',
+                        'Dahisar', 'Dahisar East', 'Dahisar West', 'Dattapada',
+                        'Dombivali', 'Dombivali East', 'Dombivli (West)', 'Dronagiri',
+                        'Ghansoli', 'Ghatkopar', 'Ghatkopar East', 'Ghatkopar West',
+                        'Goregaon', 'Goregaon East', 'Goregaon West',
+                        'Hiranandani Estates', 'Jogeshwari East', 'Jogeshwari West',
+                        'Juhu', 'Kalamboli', 'Kalwa', 'Kalyan East', 'Kalyan West',
+                        'Kamothe', 'Kandivali', 'Kandivali East', 'Kandivali West',
+                        'Kanjurmarg', 'Karanjade', 'Karjat', 'Kavesar', 'Kewale', 'Khar',
+                        'Khar West', 'Kharghar', 'Kolshet Road',
+                        'Koparkhairane Station Road', 'Koper Khairane', 'Koproli', 'Kurla',
+                        'Kurla West', 'Lower Parel', 'Magathane', 'Majiwada', 'Malad East',
+                        'Malad West', 'Matunga', 'Matunga east', 'Mira Road East',
+                        'Mira Road and Beyond', 'Mulund', 'Mulund East', 'Mulund West',
+                        'Mumbai', 'Naigaon East', 'Nala Sopara', 'Nalasopara East',
+                        'Nalasopara West', 'Navi Basti', 'Nerul', 'PARSIK NAGAR', 'Palava',
+                        'Palghar', 'Panvel', 'Parel', 'Powai', 'Prabhadevi',
+                        'Rajendra Nagar', 'Sainath Nagar', 'Sanpada', 'Santacruz East',
+                        'Santacruz West', 'Seawoods', 'Sector 12 Kamothe',
+                        'Sector 15 Kharghar', 'Sector 17 Ulwe', 'Sector 18 Kharghar',
+                        'Sector 18 Ulwe', 'Sector 19 Kharghar', 'Sector 20 Kharghar',
+                        'Sector 21 Kamothe', 'Sector 22 Kamothe', 'Sector 3 Ulwe',
+                        'Sector 9 Kamothe', 'Shil Phata', 'Sion', 'Taloja',
+                        'Taloja panchanand', 'Thakur Village', 'Thane', 'Thane West',
+                        'Titwala', 'Ulwe', 'Vasai', 'Vasai West', 'Vasai east',
+                        'Vasant Vihar', 'Vashi', 'Vikhroli', 'Vile Parle East',
+                        'Vile Parle West', 'Virar', 'Virar East', 'Virar West', 'Wadala',
+                        'Wadala East', 'Worli', 'other'];
+
+                    const select = document.querySelector('#location');
+
+                    array.forEach(function (item) {
+                        const option = document.createElement('option');
+                        option.value = item;
+                        option.text = item;
+                        select.add(option);
+                    });
+                    function onClickedEstimatePrice() {
+                        console.log("Estimate price button clicked");
+
+                        var Area = document.getElementById("area").value;
+                        var location = document.getElementById("location").value;
+                        var BHK = document.getElementById("bhk").value;
+                        var Gymnasium = document.getElementById("gymnasium").value;
+                        var Lift_Available = document.getElementById("lift_available").value;
+                        var Car_Parking = document.getElementById("car_parking").value;
+                        var Maintenance_Staff = document.getElementById("maintenance_staff").value;
+                        var Security = document.getElementById("security").value;
+                        var Childrens_Play_Area = document.getElementById("childrens_play_area").value;
+                        var Clubhouse = document.getElementById("clubhouse").value;
+                        var Intercom = document.getElementById("intercom").value;
+
+                        var estPrice = document.getElementById("uiEstimatedPrice");
+
+                        var url = "http://127.0.0.1:5000/predict_home_price"; //Use this if you are NOT using nginx which is first 7 tutorials
+
+                        $.post(url, {
+                            Area: parseFloat(Area),
+                            location:location,
+                            BHK:BHK,
+                            Gymnasium:Gymnasium,
+                            Lift_Available:Lift_Available,
+                            Car_Parking:Car_Parking,
+                            Maintenance_Staff:Maintenance_Staff,
+                            Security:Security,
+                            Childrens_Play_Area:Childrens_Play_Area,
+                            Clubhouse:Clubhouse,
+                            Intercom:Intercom,
+                        }, function (data, status) {
+                            console.log(data.estimated_price);
+                            estPrice.innerHTML = "<h2> Rs."+"  " + data.estimated_price.toString() + "</h2>";
+                            console.log(status);
+                        });
+                    }
+
+                </script>
+</body>
+
+</html>
